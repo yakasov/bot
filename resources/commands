@@ -1,0 +1,22 @@
+```
+All commands can be typed in upper or lower case
+Command words must be the first word in your message
+Use * as the prefix for your commands
+
+THANKS, TY, THANK YOU, THANK: thank the person who you really appreciate
+                              why not try 'anyone'?
+LEAGUE: league gay
+GOOD BOT, BAD BOT: how you feel about me
+
+GETPFP [user-id, anyone]: returns an avatar at the resolution it was uploaded
+SETNICK: set my nickname
+MCSTATUS: get information about the Minecraft server
+OWSHEET: get rankings from the Overwatch spreadsheet online
+OWSTATS [battletag] [stat]: get stats from the playoverwatch website about a given user
+
+JOIN: join your voice channel
+SING [song]: plays audio, local files only
+SINGYT [url]: maybe plays audio from youtube, when it feels good
+STOP: stop playing audio
+DISCONNECT: leave voice channel
+```

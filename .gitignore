@@ -1,0 +1,13 @@
+channels
+auto_update_sheets.py
+updater.bat
+audio
+__pycache__
+
+
+# All files below are required for bot to run
+# token.discord is bot secret
+# Other two files are from Google Sheets API for connecting to a certain sheet
+credentials.json
+token.discord
+token.pickle
