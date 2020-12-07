@@ -238,6 +238,14 @@ async def get_ow_stats(message):
 An example statistic is \'Time Played\'.')
 
 
+async def say_smth(message):
+    """Say something given a message."""
+    msg = message.content.split(' ', 1)[1]
+
+    await message.channel.send(msg)
+    await message.delete()
+
+
 @ tasks.loop(seconds=PRESENCE_DELAY * 2)
 async def rolling_presence():
     """Rotate rich presence through functions below on certain delay."""
@@ -268,7 +276,7 @@ async def on_ready():
     print(f'Connected and ready to go!\nCurrent date is {TODAY_FORMATTED}')
     psutil.cpu_percent()  # Get first CPU percentage usage (always 0.0)
     await check_birthdays()
-    await change_tom_nick()
+    # await change_tom_nick()
     # await rolling_presence.start()
     # Anything after the above line will NOT get executed
 
@@ -302,6 +310,7 @@ SERVER: {message.guild.name} | CHANNEL: {message.channel}\n{message.author}: {me
             f'{PREFIX}OWSTATS': get_ow_stats,
             f'{PREFIX}KATIE': happy_katie,
             f'{PREFIX}TOMINEM': change_tom_nick,
+            f'{PREFIX}SAY': say_smth,
 
             # MUSIC RESPONSES
             f'{PREFIX}JOIN': music.join_author_vc,
