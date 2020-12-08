@@ -25,7 +25,7 @@ import os
 
 from mcstatus import MinecraftServer
 from discord.ext import tasks
-from discord.utils import get
+# from discord.utils import get
 import psutil
 import discord
 import sheets
@@ -269,15 +269,10 @@ async def rolling_presence():
 async def change_tom_nick():
     """Changes Tom's nickname to 8 mile lyrics. Don't ask"""
     while True:
-        line = LYRICS[random.randint(0, len(LYRICS) - 1)][:30]
+        lyric = LYRICS[random.randint(0, len(LYRICS) - 1)][:30]
 
         await sleep(20)
-
-        try:
-            await client.get_guild(271381095990296576).get_member(TOM_ID).edit(
-                nick=line)
-        except Exception as ex:  # Occurs when Discord gets upset with the bot
-            print(ex)
+        await client.get_guild(271381095990296576).get_member(TOM_ID).edit(nick=lyric)
 
 
 @ client.event

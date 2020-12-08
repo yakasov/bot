@@ -83,14 +83,16 @@ async def download(message, client):
                     'preferredquality': '64',  # Highest bitrate Discord supports
                 }],
             }
-            ffmpeg_options = {'before_options': '-reconnect 1 -reconnect_streamed 1 -reconnect_delay_max 5',
-                              'options': '-vn'}
+            # ffmpeg_options = {
+            # 'before_options': '-reconnect 1 -reconnect_streamed 1 -reconnect_delay_max 5',
+            # 'options': '-vn'}
             link = message.content.replace(f"{PREFIX}download ", "")
 
             try:
                 with YoutubeDL(ydl_options) as ydl:
-                    info = ydl.extract_info(link, download=True)
-                url = info['formats'][0]['url']
+                    ydl.extract_info(link, download=True)
+                    # info = ydl.extract_info(link, download=True)
+                # url = info['formats'][0]['url']
             except (youtube_dl.utils.ExtractorError, youtube_dl.utils.DownloadError):
                 await message.channel.send('URL not recognised.')
     except IndexError:
@@ -98,6 +100,7 @@ async def download(message, client):
 
 
 async def list_songs(message, client):
+    """List all songs on local directory."""
     songs = os.listdir('C:/Users/Angel/Desktop/bot/resources/audio/')
     string = ''
     for song in songs:
