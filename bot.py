@@ -18,6 +18,7 @@ from datetime import date
 from time import gmtime, strftime
 from asyncio import sleep
 from subprocess import Popen
+import itertools
 import socket
 import random
 import os
@@ -241,6 +242,16 @@ An example statistic is \'Time Played\'.')
 async def say_smth(message):
     """Say something given a message."""
     msg = message.content.split(' ', 1)[1]
+
+    banned_words = ['uhoh', 'stinky']  # Or phrases
+    # For phrases, remove spaces
+    i = ''.join(c[0] for c in itertools.groupby(message.content)).replace(' ', '')
+
+    # I imagine there are cases where this doesn't catch banned words?
+    # Spelling mistakes will also not be caught
+    for word in banned_words:
+        if word in i:
+            return None
 
     await message.channel.send(msg)
     await message.delete()
