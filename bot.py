@@ -200,13 +200,24 @@ async def query_mc_server():
         players_online = MCSERVER.status().players.online
         if players_online == 1:
             await client.change_presence(activity=discord.Game(
-                f'Minecraft w/ {players_online} player'))
+                f'Minecraft [{players_online} player]'))
         else:
             await client.change_presence(activity=discord.Game(
-                f'Minecraft w/ {players_online} players'))
+                f'Minecraft [{players_online} players]'))
     except ConnectionRefusedError:  # Server can't be reached
         await client.change_presence(activity=discord.Game(
-            'server seems to be down'))
+            'Server might not be running?'))
+
+
+async def query_mc_server_names():
+    """Query the Minecraft server and set the rich presence to the player names."""
+    try:
+        players = MCSERVER.query().players.names
+        player_display = '\n| '.join(players)
+        await client.change_presence(activity=discord.Game(player_display))
+    except ConnectionRefusedError:  # Server can't be reached
+        await client.change_presence(activity=discord.Game(
+            'Enable query in server.properties!'))
 
 
 async def get_server_vals():
@@ -262,8 +273,10 @@ async def rolling_presence():
     """Rotate rich presence through functions below on certain delay."""
     await query_mc_server()
     await sleep(PRESENCE_DELAY)
-    await get_server_vals()
+    await query_mc_server_names()
     await sleep(PRESENCE_DELAY)
+    # await get_server_vals()
+    # await sleep(PRESENCE_DELAY)
 
 
 async def change_tom_nick():
@@ -283,7 +296,7 @@ async def on_ready():
     psutil.cpu_percent()  # Get first CPU percentage usage (always 0.0)
     await check_birthdays()
     # await change_tom_nick()
-    # await rolling_presence.start()
+    await rolling_presence.start()
     # Anything after the above line will NOT get executed
 
 
