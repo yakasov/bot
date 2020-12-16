@@ -96,7 +96,7 @@ def get_name(message, thanks_type):
         result = msg[msg.find(thanks_type):].replace(thanks_type, '')
 
     if result.lower().strip() == '':
-        return ' *the spanner above me*'
+        return f' {str(message.author)[:-5]}'
     if 'ANYONE' in result:
         return f' *{random.choice(message.guild.members)}*'
     return f' *{result.lower().strip()}*'
@@ -176,6 +176,7 @@ async def ow_sheet(message):
 
 async def happy_katie(message):
     """Happy Katie!"""
+    del message  # Unused
     katie = client.get_user(410834613343223818)
     channel = await katie.create_dm()
     await channel.send('Good luck in your Overwatch game, Katie!')
@@ -207,6 +208,9 @@ async def query_mc_server():
     except ConnectionRefusedError:  # Server can't be reached
         await client.change_presence(activity=discord.Game(
             'Server might not be running?'))
+    # except websockets.ConnectionClosedError:
+    except websockets.ConnectionClosed:  # Discord returns code 4000
+        pass
 
 
 async def query_mc_server_names():
@@ -214,10 +218,15 @@ async def query_mc_server_names():
     try:
         players = MCSERVER.query().players.names
         player_display = '\n| '.join(players)
-        await client.change_presence(activity=discord.Game(player_display))
+        if len(player_display) > 2:  # Really rough check but it works.
+            # Don't update to empty status if nothing to show
+            await client.change_presence(activity=discord.Game(player_display))
     except ConnectionRefusedError:  # Server can't be reached
         await client.change_presence(activity=discord.Game(
             'Enable query in server.properties!'))
+    # except websockets.ConnectionClosedError:
+    except websockets.ConnectionClosed:  # Discord returns code 4000
+        pass
 
 
 async def get_server_vals():
@@ -308,7 +317,6 @@ async def on_message(message):
 SERVER: {message.guild.name} | CHANNEL: {message.channel}\n{message.author}: {message.content}')
 
         cmd = message.content.upper()
-        #  words = cmd.split(' ')
 
         responses = {
             # TEXT RESPONSES
@@ -373,11 +381,11 @@ SERVER: {message.guild.name} | CHANNEL: {message.channel}\n{message.author}: {me
 @ client.event
 async def on_voice_state_update(member, before, after):
     """Things to do when someone updates their voice state, like joining a voice channel."""
+    del member  # Unused
     try:
         if before.channel is None and after.channel.id == 376827068723232778:  # Overwatch Gang Bang
             ow_channel = after.channel
-            ow_text_channel = client.get_channel(
-                541926728268906506)  # token-farming
+            ow_text_channel = client.get_channel(541926728268906506)  # token-farming
             if len(ow_channel.members) == 2:
                 await ow_text_channel.send(f'Good luck to all in {after.channel.mention}!')
                 await sleep(600)

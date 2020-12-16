@@ -16,6 +16,7 @@ PREFIX = '*'
 
 async def join_author_vc(message, client):
     """Join voice channel of message author."""
+    del client  # Unused
     try:
         await message.author.voice.channel.connect()
     except AttributeError:
@@ -70,6 +71,7 @@ async def sing_yt(message, client):
 
 async def download(message, client):
     """Download video from YouTube given URL."""
+    del client  # Unused
     try:
         if message.author.id == ADMIN_ID or message.author.id == 265858230247358465:
             title = message.content.split(':')
@@ -101,6 +103,7 @@ async def download(message, client):
 
 async def list_songs(message, client):
     """List all songs on local directory."""
+    del client  # Unused
     songs = os.listdir('C:/Users/Angel/Desktop/bot/resources/audio/')
     string = ''
     for song in songs:
@@ -110,6 +113,7 @@ async def list_songs(message, client):
 
 async def stop_audio(message, client):
     """Stop playing audio."""
+    del message  # Unused
     channel_voice_stream = get(client.voice_clients)
     try:
         channel_voice_stream.stop()
@@ -119,6 +123,7 @@ async def stop_audio(message, client):
 
 async def leave_vc(message, client):
     """Leave current voice channel."""
+    del client  # Unused
     try:
         await message.guild.voice_client.disconnect()
     except AttributeError:

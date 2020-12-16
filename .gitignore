@@ -1,7 +1,9 @@
 channels
 auto_update_sheets.py
 updater.bat
+pylinter-only-bot.bat
 audio
+cache
 __pycache__
 
 
